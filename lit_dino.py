@@ -3,14 +3,20 @@ import torch
 
 from torchmetrics.segmentation import MeanIoU, DiceScore
 
-from convnext_fpn import DinoConvNeXtFPN
 from loss import WeightedSumLoss
 
 
-class LitDinoConvNextFPN(pl.LightningModule):
-    def __init__(self, backbone, loss: WeightedSumLoss, freeze_backbone=True, lr=4e-3, weight_decay=5e-2, warmup_ratio = 0.05):
+class LitDinoModule(pl.LightningModule):
+    def __init__(self, backbone, encoder: str, loss: WeightedSumLoss, freeze_backbone=True, lr=4e-3, weight_decay=5e-2, warmup_ratio = 0.05):
+        assert encoder.lower() in ["convnext", "vit"], "Only convnext and vit encoders are supported"
         super().__init__()
-        self.model = DinoConvNeXtFPN(backbone, use_input_adapter=True)
+        self.encoder = encoder.lower()
+        if encoder == "convnext":
+            from convnext_fpn import DinoConvNeXtFPN
+            self.model = DinoConvNeXtFPN(backbone, use_input_adapter=True)
+        elif encoder == "vit":
+            from vit_dpt import DinoViTDPT
+            self.model = DinoViTDPT(backbone, use_input_adapter=True)
         self.freeze_backbone = freeze_backbone
         self.lr = lr
         self.weight_decay = weight_decay

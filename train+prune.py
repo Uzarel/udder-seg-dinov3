@@ -7,7 +7,7 @@ from callbacks import get_callbacks
 from config import get_config
 from dataloaders import get_dataloaders
 from dinov3_backbone import get_backbone    
-from lit_convnext_fpn import LitDinoConvNextFPN
+from lit_dino import LitDinoModule
 from logger import get_loggers, log_macs_params
 from loss import get_segmentation_loss
 
@@ -17,6 +17,7 @@ cfg = get_config()
 SEED = cfg["GENERAL"]["SEED"]
 DINOV3_REPO_SOURCE = cfg["GENERAL"]["DINOV3_REPO_SOURCE"]
 DINOV3_REPO_LOCATION = cfg["GENERAL"]["DINOV3_REPO_LOCATION"]
+MODEL_ENCODER = cfg["MODEL"]["MODEL_ENCODER"]
 MODEL_NAME = cfg["MODEL"]["MODEL_NAME"]
 MODEL_WEIGHTS = cfg["MODEL"]["MODEL_WEIGHTS"]
 TRAIN_IMAGES = cfg["DATA"]["TRAIN_IMAGES"]
@@ -67,7 +68,7 @@ train_loader, val_loader, test_loader = get_dataloaders(
 # Training loop
 loss = get_segmentation_loss(LOSS_BCE, LOSS_DICE, LOSS_TVERSKY, LOSS_LOVASZ, LOSS_FOCAL, ignore_index=LOSS_IGNORE_INDEX)
 backbone = get_backbone(DINOV3_REPO_SOURCE, DINOV3_REPO_LOCATION, MODEL_NAME, MODEL_WEIGHTS)
-lit_train = LitDinoConvNextFPN(backbone, loss=loss, lr=LR, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMPUP_RATIO, freeze_backbone=True)
+lit_train = LitDinoModule(backbone, encoder=MODEL_ENCODER, loss=loss, lr=LR, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMPUP_RATIO, freeze_backbone=True)
 trainer.fit(lit_train, train_loader, val_loader)
 example_inputs = torch.randn(1, 1, 480, 640)
 log_macs_params(lit_train.model, example_inputs, train_logger)
@@ -75,13 +76,13 @@ log_macs_params(lit_train.model, example_inputs, train_logger)
 # Testing loop
 ckpt_cb = trainer.checkpoint_callback
 best_ckpt = ckpt_cb.best_model_path
-lit_test = LitDinoConvNextFPN.load_from_checkpoint(best_ckpt, backbone=backbone, loss=loss)
+lit_test = LitDinoModule.load_from_checkpoint(best_ckpt, encoder=MODEL_ENCODER, backbone=backbone, loss=loss)
 torch.save(lit_test.model.state_dict(), f"checkpoints/{MODEL_NAME.lower()}/best.pt")
 trainer.test(lit_test, test_loader)
 wandb.finish()
 
 # Pruning
-lit_prune = LitDinoConvNextFPN.load_from_checkpoint(best_ckpt, backbone=backbone, loss=loss)
+lit_prune = LitDinoModule.load_from_checkpoint(best_ckpt, encoder=MODEL_ENCODER, backbone=backbone, loss=loss)
 model = lit_prune.model
 model.eval().cpu()
 
