@@ -10,6 +10,7 @@ from dinov3_backbone import get_backbone
 from lit_dino import LitDinoModule
 from logger import get_loggers, log_macs_params
 from loss import get_segmentation_loss
+from onnx_export import export_onnx
 
 
 # Get config
@@ -78,6 +79,8 @@ ckpt_cb = trainer.checkpoint_callback
 best_ckpt = ckpt_cb.best_model_path
 lit_test = LitDinoModule.load_from_checkpoint(best_ckpt, encoder=MODEL_ENCODER, backbone=backbone, loss=loss)
 torch.save(lit_test.model.state_dict(), f"checkpoints/{MODEL_NAME.lower()}/best.pt")
+onnx_model = lit_test.model.cpu()
+export_onnx(onnx_model, example_inputs, MODEL_NAME.lower())
 trainer.test(lit_test, test_loader)
 wandb.finish()
 
@@ -132,5 +135,7 @@ lit_prune.load_state_dict(ckpt["state_dict"], strict=True)
 
 # Save/export weights and test
 torch.save(lit_prune.model.state_dict(), f"checkpoints/{MODEL_NAME.lower()}_pruned/best.pt")
+onnx_model = lit_prune.model.cpu()
+export_onnx(onnx_model, example_inputs, MODEL_NAME.lower() + "_pruned")
 trainer.test(lit_prune, test_loader)
 wandb.finish()
