@@ -55,6 +55,7 @@ trainer = pl.Trainer(
     accelerator="gpu" if torch.cuda.is_available() else "cpu",
     devices=-1,
     precision=32,
+    gradient_clip_val=1.0,
     callbacks=get_callbacks(model_name=MODEL_NAME, max_epochs=MAX_EPOCHS, mode="train"),
     logger=train_logger,
 )
@@ -121,6 +122,7 @@ trainer = pl.Trainer(
     accelerator="gpu" if torch.cuda.is_available() else "cpu",
     devices=-1,
     precision=32,
+    gradient_clip_val=1.0,
     strategy="ddp_find_unused_parameters_true",
     callbacks=get_callbacks(model_name=MODEL_NAME, max_epochs=MAX_EPOCHS, mode="prune"),
     logger=prune_logger,
