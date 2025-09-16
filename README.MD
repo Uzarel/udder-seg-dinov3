@@ -1,0 +1,1 @@
+[WandB logs](https://wandb.ai/mat094/udder-seg-dinov3)
