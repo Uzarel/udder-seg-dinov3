@@ -93,7 +93,7 @@ For testing, you can use the provided [`client.py`](jetson/client.py) script to 
 python client.py --url http://<JETSON_IP>:8000/segment --image path/to/image.png
 ```
 
-We also provide an example image [`example.png`](jetson/example.png) for this purpose.
+We also provide an [`example image`](jetson/example.png) for this purpose.
 
 ## Official Training Logs and Model Weights
 
