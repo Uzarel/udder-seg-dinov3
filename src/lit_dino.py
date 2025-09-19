@@ -3,7 +3,7 @@ import torch
 
 from torchmetrics.segmentation import MeanIoU, DiceScore
 
-from loss import WeightedSumLoss
+from .loss import WeightedSumLoss
 
 
 class LitDinoModule(pl.LightningModule):

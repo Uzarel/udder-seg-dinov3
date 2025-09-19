@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader
 
-from augmentations import get_training_augmentation, get_validation_augmentation
-from dataset import UdderSegmentationDataset
+from .augmentations import get_training_augmentation, get_validation_augmentation
+from .dataset import UdderSegmentationDataset
 
 
 def get_dataloaders(train_images, train_masks, val_images, val_masks, test_images, test_masks, batch_size):

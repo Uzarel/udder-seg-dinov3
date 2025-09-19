@@ -3,14 +3,14 @@ import torch_pruning as tp
 import pytorch_lightning as pl
 import wandb
 
-from callbacks import get_callbacks
-from config import get_config
-from dataloaders import get_dataloaders
-from dinov3_backbone import get_backbone    
-from lit_dino import LitDinoModule
-from logger import get_loggers, log_macs_params
-from loss import get_segmentation_loss
-from onnx_export import export_onnx
+from src.callbacks import get_callbacks
+from src.config import get_config
+from src.dataloaders import get_dataloaders
+from src.dinov3_backbone import get_backbone    
+from src.lit_dino import LitDinoModule
+from src.logger import get_loggers, log_macs_params
+from src.loss import get_segmentation_loss
+from src.onnx_export import export_onnx
 
 
 # Get config

@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 from typing import Sequence, List, Optional
 
-from adapters import InputAdapter1to3, ImageNetNormalizer
-from dpt_decoder import DPTDecoder, DPTSegmentationHead
+from .adapters import InputAdapter1to3, ImageNetNormalizer
+from .dpt_decoder import DPTDecoder, DPTSegmentationHead
 
 class DINOv3ViTEncoderNoCLS(nn.Module):
     """

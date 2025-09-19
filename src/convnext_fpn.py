@@ -1,8 +1,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-from adapters import InputAdapter1to3, ImageNetNormalizer
-from fpn_decoder import FPNDecoder
+from .adapters import InputAdapter1to3, ImageNetNormalizer
+from .fpn_decoder import FPNDecoder
 
 def get_enc_ch_from_convnext(convnext_backbone):
     # Read ConvNeXt stage widths from downsample layers
