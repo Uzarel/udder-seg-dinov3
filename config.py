@@ -12,17 +12,15 @@ def _coerce(value: str) -> Any:
         return True
     if low in {"false", "no", "off"}:
         return False
-    # int first (so "42" -> 42, not 42.0)
     try:
         return int(v)
     except ValueError:
         pass
-    # then float (so "0.005" -> 0.005, "1.0" -> 1.0)
     try:
         return float(v)
     except ValueError:
         pass
-    return v  # leave as string
+    return v
 
 def get_config(path: str = "config.ini") -> Dict[str, Dict[str, Any]]:
     """

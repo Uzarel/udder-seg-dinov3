@@ -82,7 +82,6 @@ class LitDinoModule(pl.LightningModule):
         )
 
     def configure_optimizers(self):
-        # --- param groups / optimizer (unchanged logic, but returned together with a scheduler) ---
         head_params = list(self.model.encoder.input_adapter.parameters()) + \
                       list(self.model.decoder.parameters()) + \
                       list(self.model.seg_head.parameters())
@@ -95,7 +94,6 @@ class LitDinoModule(pl.LightningModule):
         else:
             optimizer = torch.optim.AdamW(head_params, lr=self.lr, weight_decay=self.weight_decay)
 
-        # --- derive total training steps from the trainer ---
         # prefer explicit max_steps if set; otherwise use Lightning's estimate
         if getattr(self.trainer, "max_steps", None) and self.trainer.max_steps > 0:
             total_steps = self.trainer.max_steps
@@ -106,7 +104,7 @@ class LitDinoModule(pl.LightningModule):
         warmup_steps = max(1, int(total_steps * self.warmup_ratio))
         cosine_steps = max(1, total_steps - warmup_steps)
 
-        # --- build warmup (linear) then cosine, both stepped per *batch* ---
+        # build warmup (linear) then cosine, both stepped per batch
         warmup = torch.optim.lr_scheduler.LinearLR(
             optimizer, start_factor=1e-2, total_iters=warmup_steps
         )
@@ -117,7 +115,6 @@ class LitDinoModule(pl.LightningModule):
             optimizer, schedulers=[warmup, cosine], milestones=[warmup_steps]
         )
 
-        # Lightning expects a dict when returning schedulers; set interval="step"
         return {
             "optimizer": optimizer,
             "lr_scheduler": {
