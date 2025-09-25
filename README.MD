@@ -21,6 +21,8 @@ Ensure you have installed the required dependencies:
 pip install -r requirements.txt
 ```
 
+Finally, ensure you have the DINOv3 backbone weights in the `backbones` folder. You can request the DINOv3 weights on the official [`Meta website`](https://ai.meta.com/resources/models-and-libraries/dinov3-downloads/).
+
 ### Running the Script
 
 To run the training process, execute the following command:
