@@ -9,7 +9,7 @@ def export_onnx(model, dummy_input, model_name):
         output_names=["logits"],
         export_params=True,
         do_constant_folding=True,
-        opset_version=17, # LayerNorm/GELU/Resize are solid
+        opset_version=11, # Forces decomposition of LayerNorm and other layers
         dynamic_axes={
             "image":  {0: "batch", 2: "height", 3: "width"},
             "logits": {0: "batch", 2: "height", 3: "width"},
