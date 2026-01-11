@@ -1,0 +1,27 @@
+{
+    "name": "Jetson L4T ML",
+    // CHANGE THIS TAG to match your JetPack version (e.g., r35.2.1-py3, r36.2.0-py3)
+    "image": "dustynv/l4t-ml:r35.4.1",
+    
+    // This allows the container to access the GPU and drivers.
+    "runArgs": [
+      "--runtime=nvidia",
+      "--network=host"
+    ],
+  
+    // This ensures VS Code installs the Python extension inside the container
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python",
+          "ms-python.vscode-pylance"
+        ]
+      }
+    },
+  
+    // The l4t-ml container runs as root by default. 
+    "remoteUser": "root",
+  
+    // Optional: If you need to install extra pip packages every time you rebuild
+    "postCreateCommand": "pip3 install colored polygraphy --extra-index-url https://pypi.ngc.nvidia.com"
+  }
