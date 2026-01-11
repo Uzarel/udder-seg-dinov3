@@ -1,10 +1,14 @@
-# torch with cuda support is strongly recommended to be installed from the official website: https://pytorch.org/get-started/locally/
 albumentations
 onnx
+onnxconverter-common
+# onnxruntime-gpu (onnxruntime with gpu support) is strongly recommended to be installed
+onnxruntime
 opencv-python
+# torch with cuda support is strongly recommended to be installed from the official website: https://pytorch.org/get-started/locally/
 torch
 pytorch-lightning
 torch-pruning
 torchmetrics
 segmentation-models-pytorch
 wandb
+timm

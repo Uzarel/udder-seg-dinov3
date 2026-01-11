@@ -15,7 +15,7 @@ def log_macs_params(model, example_inputs, logger=None):
     ex = example_inputs.to(device)
 
     with torch.no_grad():
-        model.eval()
+        # model.eval()
         macs, params = tp.utils.count_ops_and_params(model, ex)
 
     if was_training:
