@@ -120,6 +120,6 @@ We also provide an [`example image`](jetson/example.png) for this purpose.
 ## Official Training Logs and Model Weights
 
 - **Training Logs**: [WandB](https://wandb.ai/mat094/udder-seg-dinov3)
-- **Model Weights**: [Google Drive](https://drive.google.com/file/d/1AMtpJtvlrIduNFDs8Cr5rfEyHy6eVEuD/view?usp=sharing)
+- **Model Weights**: [Google Drive](https://drive.google.com/file/d/1toQkLXEUPlGmE-HaarA4XqBl3R_H63vW/view?usp=sharing)
 
 This repository is released under the MIT [`LICENSE`](LICENSE). For any questions, please contact the authors of the paper or open an issue here on the official repository.
